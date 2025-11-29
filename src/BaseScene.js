@@ -44,7 +44,7 @@ export default class BaseScene extends Phaser.Scene {
     }
 
     preload() {
-        // --- ASSETS LOADED FOR ALL SCENES ---
+        // --- 🧱 ASSETS LOADED FOR ALL SCENES ---
 
         // 1. Player Spritesheet (REVERTED TO ORIGINAL)
         this.load.spritesheet(PLAYER_KEY, window.ASSET_PATH + 'images/player-sprite.png', {
@@ -139,7 +139,26 @@ export default class BaseScene extends Phaser.Scene {
 
         // --- UI SETUP ---
         this.dialogueWindow = new DialogueWindow(this);
+        
+        // 🏢 FLOOR INDICATOR - Override this in child scenes!
+        this.createFloorIndicator('1st Floor');
     }
+    
+    // 🏢 FLOOR INDICATOR METHOD
+   createFloorIndicator(floorName) {
+    // Make it HUGE and RED so you can see it!
+    this.add.text(
+        100, 50,  // Middle of screen
+        floorName,
+        {
+            fontFamily: 'Arial, sans-serif',
+            fontSize: '20px',    // HUGE
+            color: '#ffffff',
+            backgroundColor: '#ff0000',  // BRIGHT RED
+            padding: { x: 15, y: 10 }
+        }
+    ).setOrigin(0.5, 0.5).setDepth(1000).setScrollFactor(0);
+}
 
     createPlayerAnimations() {
         // Frame Index: Down (0-2), Up (3-5), Left (6-8), Right (9-11)
@@ -557,8 +576,6 @@ export default class BaseScene extends Phaser.Scene {
                 case 'up': this.player.setFrame(3); break;
                 case 'left': this.player.setFrame(6); break;
                 case 'right': this.player.setFrame(9); break;
-
-
             }
         }
     }
