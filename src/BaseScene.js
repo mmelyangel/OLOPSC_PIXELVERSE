@@ -1,5 +1,4 @@
-// src/BaseScene.js
-// A base class to handle common Phaser logic like player movement, map loading, scene transitions, and the tour core.
+
 import { supabase } from './supabaseClient.js';
 import DialogueWindow from './DialogueWindow.js';
 
@@ -252,9 +251,7 @@ export default class BaseScene extends Phaser.Scene {
 
     // --- NPC/DIALOGUE LOGIC ---
 
-    /**
-     * Fetches NPC data from Supabase for the current scene, including sprite frame.
-     */
+    
     async loadNpcData() {
         if (!supabase) return;
 

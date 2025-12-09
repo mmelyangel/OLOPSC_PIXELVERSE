@@ -1,7 +1,4 @@
-/**
- * DialogueWindow Class - Visual Novel Style
- * Features: Character portrait on left, centered dialogue box, choice buttons
- */
+
 class DialogueWindow extends Phaser.GameObjects.Container {
     constructor(scene) {
         super(scene, 0, 0);
@@ -27,7 +24,6 @@ class DialogueWindow extends Phaser.GameObjects.Container {
         this.boxY = boxY;
 
         // --- 1. DIALOGUE BOX BACKGROUND ---
-        // 🎨 CUSTOMIZE BOX STYLE HERE
         this.dialogueBoxBg = scene.add.graphics()
             .fillStyle(0x1e3a5f, 1)        // ⬅️ Box color (dark blue)
             .lineStyle(4, 0xffffff, 1)     // ⬅️ Border (4px white)
