@@ -1,9 +1,6 @@
 // src/Npc.js
 
-/**
- * Represents a single Non-Player Character (NPC) in the game.
- * NPCs are stationary sprites that can be interacted with.
- */
+
 export default class Npc extends Phaser.Physics.Arcade.Sprite {
     /**
      * @param {Phaser.Scene} scene The scene the NPC belongs to.
@@ -30,8 +27,5 @@ export default class Npc extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true);
     }
 
-    // You can add more specific NPC behavior here later, like:
-    // - Simple idle animations (e.g., this.play('npc-idle'))
-    // - Logic for having the NPC face the player during dialogue
-    // - Pathfinding or movement logic (if they weren't stationary)
+  
 }

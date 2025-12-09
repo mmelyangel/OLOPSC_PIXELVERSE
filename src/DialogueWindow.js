@@ -12,7 +12,7 @@ class DialogueWindow extends Phaser.GameObjects.Container {
         const screenWidth = scene.sys.game.config.width;
         const screenHeight = scene.sys.game.config.height;
         
-        const BOX_WIDTH = 700;           // ⬅️ Width of dialogue box
+        const BOX_WIDTH = 450;           // ⬅️ Width of dialogue box
         const BOX_HEIGHT = 150;          // ⬅️ Height of dialogue box
         const BOX_BOTTOM_MARGIN = 40;    // ⬅️ Space from bottom of screen
         
@@ -51,10 +51,10 @@ class DialogueWindow extends Phaser.GameObjects.Container {
 
         // --- 2. CHARACTER PORTRAIT (LEFT SIDE) ---
         // 🎨 CUSTOMIZE PORTRAIT POSITION & SIZE
-        const PORTRAIT_SIZE = 180;        // ⬅️ Size of portrait box
-        const PORTRAIT_LEFT_MARGIN = 60;  // ⬅️ Distance from left edge
+        const PORTRAIT_SIZE = 120;        // ⬅️ Size of portrait box
+        const PORTRAIT_LEFT_MARGIN = 500;  // ⬅️ Distance from left edge
         
-        this.portraitX = PORTRAIT_LEFT_MARGIN + PORTRAIT_SIZE / 2;
+        this.portraitX = PORTRAIT_LEFT_MARGIN + PORTRAIT_SIZE / 1;
         this.portraitY = boxY;
 
         // Portrait background box
@@ -226,8 +226,8 @@ class DialogueWindow extends Phaser.GameObjects.Container {
      */
     createChoiceButtons(choices) {
         // 🎨 CUSTOMIZE CHOICE BUTTON STYLE
-        const BUTTON_WIDTH = 600;         // ⬅️ Button width
-        const BUTTON_HEIGHT = 40;         // ⬅️ Button height
+        const BUTTON_WIDTH = 300;         // ⬅️ Button width
+        const BUTTON_HEIGHT = 20;         // ⬅️ Button height
         const BUTTON_SPACING = 15;        // ⬅️ Space between buttons
         const BUTTON_START_Y = this.boxY + this.BOX_HEIGHT / 2 + 20; // Below dialogue box
 
