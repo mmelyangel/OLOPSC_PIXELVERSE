@@ -47,10 +47,10 @@ class DialogueWindow extends Phaser.GameObjects.Container {
 
         // --- 2. CHARACTER PORTRAIT (LEFT SIDE) ---
         // 🎨 CUSTOMIZE PORTRAIT POSITION & SIZE
-        const PORTRAIT_SIZE = 120;        // ⬅️ Size of portrait box
-        const PORTRAIT_LEFT_MARGIN = 500;  // ⬅️ Distance from left edge
+        const PORTRAIT_SIZE = 140;        // ⬅️ Size of portrait box
+        const PORTRAIT_LEFT_MARGIN = 20;  // ⬅️ Distance from left edge
         
-        this.portraitX = PORTRAIT_LEFT_MARGIN + PORTRAIT_SIZE / 1;
+        this.portraitX = PORTRAIT_LEFT_MARGIN + PORTRAIT_SIZE / 2;
         this.portraitY = boxY;
 
         // Portrait background box
@@ -197,7 +197,7 @@ class DialogueWindow extends Phaser.GameObjects.Container {
         // Set portrait
         this.portraitImage.setTexture(portraitKey, portraitFrame);
         this.portraitImage.setVisible(true);
-        this.portraitImage.setScale(3); // ⬅️ Adjust portrait scale
+        this.portraitImage.setScale(2); // ⬅️ Adjust portrait scale
 
         // Set dialogue text
         this.dialogueText.setText(text);

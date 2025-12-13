@@ -26,8 +26,6 @@ export default class EntranceScene extends BaseScene {
         
         // 🏢 FLOOR INDICATOR
         this.createFloorIndicator('Ground Floor - Entrance');
-        // OR: this.createFloorIndicator('🏢 Lobby');
-        // OR: this.createFloorIndicator('G/F');
     }
 }
        

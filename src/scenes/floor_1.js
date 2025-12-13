@@ -5,7 +5,7 @@ import BaseScene from '../BaseScene.js';
 
 export default class Floor1Scene extends BaseScene {
     constructor() {
-        // Scene Key, Map Key (e.g., floor_1.json), Tileset Keys
+       
         super('Floor1Scene', 'map_floor_1', ['main_tileset', '2nd_main_tileset', 'furnitures']);
     }
 
@@ -20,8 +20,7 @@ export default class Floor1Scene extends BaseScene {
     }
 
     create() {
-        // BaseScene.create() will automatically fetch the 5 NPCs for this scene 
-        // using the 'Floor1Scene' key in its Supabase query.
+    
         super.create();
         console.log("Exploring Floor 1 (5 NPCs).");
     }

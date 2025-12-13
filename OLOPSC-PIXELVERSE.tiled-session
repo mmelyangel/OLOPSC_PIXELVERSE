@@ -36,7 +36,7 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 545.3333333333333,
-                "y": 246.99999999999997
+                "y": 657
             }
         },
         "assets/maps/entrance.json#2nd_main_tileset": {
@@ -80,8 +80,8 @@
             "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 384,
-                "y": 271.66666666666663
+                "x": 404.66666666666663,
+                "y": 653.6666666666666
             }
         },
         "assets/maps/floor_1.json#2nd_main_tileset": {
@@ -116,11 +116,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
-            "selectedLayer": 3,
+            "scale": 1,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 509.3333333333333,
-                "y": 677.6666666666666
+                "x": 509,
+                "y": 455.5
             }
         },
         "assets/maps/floor_3.json#2nd_main_tileset": {
