@@ -1,4 +1,3 @@
-
 import { supabase } from './supabaseClient.js';
 import DialogueWindow from './DialogueWindow.js';
 
@@ -46,9 +45,9 @@ export default class BaseScene extends Phaser.Scene {
         // --- 🧱 ASSETS LOADED FOR ALL SCENES ---
 
         // 1. Player Spritesheet (REVERTED TO ORIGINAL)
-        this.load.spritesheet(PLAYER_KEY, window.ASSET_PATH + 'images/player-sprite.png', {
-            frameWidth: 16,
-            frameHeight: 16
+        this.load.spritesheet(PLAYER_KEY, 'assets/images/player-sprite.png', {
+            frameWidth: 48,
+            frameHeight: 48
         });
 
         // 2. Custom NPC Image Load (PATH CHECK)
@@ -97,9 +96,9 @@ export default class BaseScene extends Phaser.Scene {
         // --- PLAYER SETUP ---
         this.player = this.physics.add.sprite(this.target_x, this.target_y, PLAYER_KEY, 0); // Using frame 0 for idle
         this.player.setCollideWorldBounds(true);
-        this.player.setScale(2);
-        this.player.body.setSize(12, 6);
-        this.player.body.setOffset(2, 10);
+        this.player.setScale(0.7);
+        this.player.body.setSize(25, 40);
+        this.player.body.setOffset(11, 10);
         this.player.setDepth(10);
         // Player state for dialogue control
         this.player.isTalking = false;
@@ -115,7 +114,7 @@ export default class BaseScene extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
         // --- INPUTS & ANIMATIONS ---
-        this.controls = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.createCursorKeys();
         this.interactKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         this.createPlayerAnimations();
@@ -138,58 +137,69 @@ export default class BaseScene extends Phaser.Scene {
 
         // --- UI SETUP ---
         this.dialogueWindow = new DialogueWindow(this);
-        
+
         // 🏢 FLOOR INDICATOR - Override this in child scenes!
         this.createFloorIndicator('1st Floor');
     }
-    
+
     // 🏢 FLOOR INDICATOR METHOD
-   createFloorIndicator(floorName) {
-    // Make it HUGE and RED so you can see it!
-    this.add.text(
-        100, 50,  // Middle of screen
-        floorName,
-        {
-            fontFamily: 'Arial, sans-serif',
-            fontSize: '20px',    // HUGE
-            color: '#ffffff',
-            backgroundColor: '#ff0000',  // BRIGHT RED
-            padding: { x: 15, y: 10 }
-        }
-    ).setOrigin(0.5, 0.5).setDepth(1000).setScrollFactor(0);
-}
+    createFloorIndicator(floorName) {
+        // Make it HUGE and RED so you can see it!
+        this.add.text(
+            100, 50,  // Middle of screen
+            floorName,
+            {
+                fontFamily: 'Arial, sans-serif',
+                fontSize: '20px',    // HUGE
+                color: '#ffffff',
+                backgroundColor: '#ff0000',  // BRIGHT RED
+                padding: { x: 15, y: 10 }
+            }
+        ).setOrigin(0.5, 0.5).setDepth(1000).setScrollFactor(0);
+    }
 
     createPlayerAnimations() {
         // Frame Index: Down (0-2), Up (3-5), Left (6-8), Right (9-11)
-        if (this.anims.exists('walk-down')) return;
-
         this.anims.create({
             key: 'walk-down',
-            frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 0, end: 2 }),
+            frames: this.anims.generateFrameNumbers('player', {
+                start: 0,
+                end: 2
+            }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'walk-up',
-            frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 3, end: 5 }),
+            frames: this.anims.generateFrameNumbers('player', {
+                start: 3,  // ⬅️ Changed from 9
+                end: 5     // ⬅️ Changed from 11
+            }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'walk-left',
-            frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 6, end: 8 }),
+            frames: this.anims.generateFrameNumbers('player', {
+                start: 6,  // ⬅️ Changed from 18
+                end: 8     // ⬅️ Changed from 20
+            }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'walk-right',
-            frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 9, end: 11 }),
+            frames: this.anims.generateFrameNumbers('player', {
+                start: 9,  // ⬅️ Changed from 27
+                end: 11    // ⬅️ Changed from 29
+            }),
             frameRate: 10,
             repeat: -1
         });
+
     }
 
     // --- UTILITY FUNCTIONS ---
@@ -251,7 +261,6 @@ export default class BaseScene extends Phaser.Scene {
 
     // --- NPC/DIALOGUE LOGIC ---
 
-    
     async loadNpcData() {
         if (!supabase) return;
 
@@ -527,52 +536,46 @@ export default class BaseScene extends Phaser.Scene {
         }
 
         // --- Movement Logic ---
+        const speed = 160;
+        let moving = false;
+
+        // Reset velocity
         this.player.setVelocity(0);
-        let isMoving = false;
-        const speed = this.PLAYER_SPEED;
-        let currentAnimKey = 'walk-down'; // Default animation
 
-        if (this.controls.left.isDown) {
+        // Horizontal movement
+        if (this.cursors.left.isDown) {
             this.player.setVelocityX(-speed);
-            currentAnimKey = 'walk-left';
-            this.lastDirection = 'left';
-            isMoving = true;
-        } else if (this.controls.right.isDown) {
+            this.player.anims.play('walk-left', true);
+            moving = true;
+        }
+        else if (this.cursors.right.isDown) {
             this.player.setVelocityX(speed);
-            currentAnimKey = 'walk-right';
-            this.lastDirection = 'right';
-            isMoving = true;
+            this.player.anims.play('walk-right', true);
+            moving = true;
         }
 
-        if (this.controls.up.isDown) {
+        // Vertical movement
+        if (this.cursors.up.isDown) {
             this.player.setVelocityY(-speed);
-            currentAnimKey = 'walk-up';
-            this.lastDirection = 'up';
-            isMoving = true;
-        } else if (this.controls.down.isDown) {
+            this.player.anims.play('walk-up', true);
+            moving = true;
+        }
+        else if (this.cursors.down.isDown) {
             this.player.setVelocityY(speed);
-            currentAnimKey = 'walk-down';
-            this.lastDirection = 'down';
-            isMoving = true;
+            this.player.anims.play('walk-down', true);
+            moving = true;
         }
 
-        // Diagonal speed correction
-        if (this.player.body.velocity.x !== 0 && this.player.body.velocity.y !== 0) {
-            this.player.body.velocity.normalize().scale(speed);
-        }
-
-        // Play animation if moving
-        if (isMoving) {
-            this.player.anims.play(currentAnimKey, true);
-        } else {
-            // Stop animation and set idle frame
+        // Stop animation when not moving
+        if (!moving) {
             this.player.anims.stop();
-            // Set the frame based on the last direction of movement
-            switch (this.lastDirection) {
-                case 'down': this.player.setFrame(0); break;
-                case 'up': this.player.setFrame(3); break;
-                case 'left': this.player.setFrame(6); break;
-                case 'right': this.player.setFrame(9); break;
+            // Set to idle frame based on last direction
+            const currentAnim = this.player.anims.currentAnim;
+            if (currentAnim) {
+                if (currentAnim.key === 'walk-down') this.player.setFrame(1);   // Middle frame of down
+                else if (currentAnim.key === 'walk-up') this.player.setFrame(4);     // Middle frame of up
+                else if (currentAnim.key === 'walk-left') this.player.setFrame(7);   // Middle frame of left
+                else if (currentAnim.key === 'walk-right') this.player.setFrame(10); // Middle frame of right
             }
         }
     }

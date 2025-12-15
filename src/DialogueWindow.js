@@ -1,4 +1,3 @@
-
 class DialogueWindow extends Phaser.GameObjects.Container {
     constructor(scene) {
         super(scene, 0, 0);
@@ -9,9 +8,9 @@ class DialogueWindow extends Phaser.GameObjects.Container {
         const screenWidth = scene.sys.game.config.width;
         const screenHeight = scene.sys.game.config.height;
         
-        const BOX_WIDTH = 450;           // ⬅️ Width of dialogue box
-        const BOX_HEIGHT = 150;          // ⬅️ Height of dialogue box
-        const BOX_BOTTOM_MARGIN = 40;    // ⬅️ Space from bottom of screen
+        const BOX_WIDTH = 500;           // ⬅️ Width of dialogue box
+        const BOX_HEIGHT = 120;          // ⬅️ Height of dialogue box
+        const BOX_BOTTOM_MARGIN = 20;    // ⬅️ Space from bottom of screen
         
         // Center the dialogue box horizontally, position at bottom
         const boxX = screenWidth / 2;
@@ -47,33 +46,12 @@ class DialogueWindow extends Phaser.GameObjects.Container {
 
         // --- 2. CHARACTER PORTRAIT (LEFT SIDE) ---
         // 🎨 CUSTOMIZE PORTRAIT POSITION & SIZE
-        const PORTRAIT_SIZE = 140;        // ⬅️ Size of portrait box
-        const PORTRAIT_LEFT_MARGIN = 20;  // ⬅️ Distance from left edge
+        const PORTRAIT_SIZE = 80;         // ⬅️ Size of portrait box
+        const PORTRAIT_LEFT_MARGIN = 30;  // ⬅️ Distance from left edge of dialogue box
         
-        this.portraitX = PORTRAIT_LEFT_MARGIN + PORTRAIT_SIZE / 2;
+        this.portraitX = boxX - BOX_WIDTH / 2 + PORTRAIT_LEFT_MARGIN + PORTRAIT_SIZE / 2;
         this.portraitY = boxY;
-
-        // Portrait background box
-        this.portraitBg = scene.add.graphics()
-            .fillStyle(0x1e3a5f, 1)
-            .lineStyle(4, 0xffffff, 1)
-            .fillRoundedRect(
-                this.portraitX - PORTRAIT_SIZE / 2,
-                this.portraitY - PORTRAIT_SIZE / 2,
-                PORTRAIT_SIZE,
-                PORTRAIT_SIZE,
-                8
-            )
-            .strokeRoundedRect(
-                this.portraitX - PORTRAIT_SIZE / 2,
-                this.portraitY - PORTRAIT_SIZE / 2,
-                PORTRAIT_SIZE,
-                PORTRAIT_SIZE,
-                8
-            )
-            .setDepth(100);
-
-        this.add(this.portraitBg);
+            
 
         // Portrait image (will be set dynamically)
         this.portraitImage = scene.add.sprite(
@@ -85,25 +63,25 @@ class DialogueWindow extends Phaser.GameObjects.Container {
         
         this.add(this.portraitImage);
 
-        // --- 3. NPC NAME BOX (ABOVE PORTRAIT) ---
+        // --- 3. NPC NAME BOX (ABOVE DIALOGUE BOX) ---
         // 🎨 CUSTOMIZE NAME BOX
-        const NAME_BOX_WIDTH = PORTRAIT_SIZE;
-        const NAME_BOX_HEIGHT = 35;
+        const NAME_BOX_WIDTH = 150;
+        const NAME_BOX_HEIGHT = 30;
         
-        this.nameBoxY = this.portraitY - PORTRAIT_SIZE / 2 - NAME_BOX_HEIGHT / 2 - 5;
+        this.nameBoxY = boxY - BOX_HEIGHT / 2 - NAME_BOX_HEIGHT / 2 - 5;
 
         this.nameBoxBg = scene.add.graphics()
             .fillStyle(0x2c5f8d, 1)        // ⬅️ Name box color
             .lineStyle(3, 0xffffff, 1)
             .fillRoundedRect(
-                this.portraitX - NAME_BOX_WIDTH / 2,
+                boxX - BOX_WIDTH / 2,
                 this.nameBoxY - NAME_BOX_HEIGHT / 2,
                 NAME_BOX_WIDTH,
                 NAME_BOX_HEIGHT,
                 5
             )
             .strokeRoundedRect(
-                this.portraitX - NAME_BOX_WIDTH / 2,
+                boxX - BOX_WIDTH / 2,
                 this.nameBoxY - NAME_BOX_HEIGHT / 2,
                 NAME_BOX_WIDTH,
                 NAME_BOX_HEIGHT,
@@ -115,12 +93,12 @@ class DialogueWindow extends Phaser.GameObjects.Container {
 
         // 🎨 CUSTOMIZE NAME TEXT
         this.nameText = scene.add.text(
-            this.portraitX,
+            boxX - BOX_WIDTH / 2 + NAME_BOX_WIDTH / 2,
             this.nameBoxY,
             'NPC Name',
             {
                 fontFamily: 'Arial, sans-serif',
-                fontSize: '18px',          // ⬅️ Name font size
+                fontSize: '16px',          // ⬅️ Name font size
                 color: '#ffffff',          // ⬅️ Name color
                 fontStyle: 'bold'
             }
@@ -130,18 +108,19 @@ class DialogueWindow extends Phaser.GameObjects.Container {
 
         // --- 4. DIALOGUE TEXT ---
         // 🎨 CUSTOMIZE DIALOGUE TEXT
-        const TEXT_PADDING = 20;
+        const TEXT_LEFT_PADDING = PORTRAIT_SIZE + 50; // Space for portrait
+        const TEXT_PADDING = 15;
         
         this.dialogueText = scene.add.text(
-            boxX - BOX_WIDTH / 2 + TEXT_PADDING,
+            boxX - BOX_WIDTH / 2 + TEXT_LEFT_PADDING,
             boxY - BOX_HEIGHT / 2 + TEXT_PADDING,
             '',
             {
                 fontFamily: 'Arial, sans-serif',
-                fontSize: '16px',          // ⬅️ Dialogue font size
+                fontSize: '14px',          // ⬅️ Dialogue font size
                 color: '#ffffff',          // ⬅️ Text color
                 wordWrap: { 
-                    width: BOX_WIDTH - (TEXT_PADDING * 2),
+                    width: BOX_WIDTH - TEXT_LEFT_PADDING - TEXT_PADDING,
                     useAdvancedWrap: true 
                 }
             }
@@ -222,10 +201,10 @@ class DialogueWindow extends Phaser.GameObjects.Container {
      */
     createChoiceButtons(choices) {
         // 🎨 CUSTOMIZE CHOICE BUTTON STYLE
-        const BUTTON_WIDTH = 300;         // ⬅️ Button width
-        const BUTTON_HEIGHT = 20;         // ⬅️ Button height
-        const BUTTON_SPACING = 15;        // ⬅️ Space between buttons
-        const BUTTON_START_Y = this.boxY + this.BOX_HEIGHT / 2 + 20; // Below dialogue box
+        const BUTTON_WIDTH = 400;         // ⬅️ Button width
+        const BUTTON_HEIGHT = 35;         // ⬅️ Button height
+        const BUTTON_SPACING = 10;        // ⬅️ Space between buttons
+        const BUTTON_START_Y = this.boxY + this.BOX_HEIGHT / 2 + 30; // Below dialogue box
 
         choices.forEach((choice, index) => {
             const buttonX = this.scene.sys.game.config.width / 2;
@@ -267,7 +246,7 @@ class DialogueWindow extends Phaser.GameObjects.Container {
                 `${choice.index}. ${choice.text}`,
                 {
                     fontFamily: 'Arial, sans-serif',
-                    fontSize: '16px',      // ⬅️ Button text size
+                    fontSize: '14px',      // ⬅️ Button text size
                     color: '#ffffff'
                 }
             ).setOrigin(0.5, 0.5).setDepth(102);
